@@ -1,11 +1,13 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
+import FormField from '../common/FormField';
+import TextAreaField from '../common/TextAreaField';
 
 function AdminJobForm({ onAddJob, jobToEdit, onUpdateJob }) {
   const navigate = useNavigate();
   const { id } = useParams();
   const isEditMode = !!jobToEdit;
-  
+
   const [jobData, setJobData] = useState({
     company: '',
     title: '',
@@ -17,21 +19,20 @@ function AdminJobForm({ onAddJob, jobToEdit, onUpdateJob }) {
     applicationLink: '',
     deadline: ''
   });
-  
-  // Load job data if in edit mode
+
   useEffect(() => {
     if (jobToEdit) {
       setJobData(jobToEdit);
     }
   }, [jobToEdit]);
-  
+
   const handleChange = (e) => {
     setJobData({
       ...jobData,
       [e.target.name]: e.target.value
     });
   };
-  
+
   const handleSubmit = (e) => {
     e.preventDefault();
     if (isEditMode) {
@@ -41,60 +42,36 @@ function AdminJobForm({ onAddJob, jobToEdit, onUpdateJob }) {
     }
     navigate('/admin');
   };
-  
+
   return (
     <div>
       <h1 className="text-2xl font-bold text-gray-800 mb-6">
         {isEditMode ? 'Edit Job' : 'Add New Job'}
       </h1>
-      
+
       <form onSubmit={handleSubmit} className="bg-white shadow-md rounded-lg p-6">
         <div className="grid grid-cols-1 gap-6 md:grid-cols-2">
-          <div>
-            <label className="block text-gray-700 text-sm font-bold mb-2" htmlFor="company">
-              Company Name
-            </label>
-            <input
-              className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
-              id="company"
-              type="text"
-              name="company"
-              value={jobData.company}
-              onChange={handleChange}
-              required
-            />
-          </div>
-          
-          <div>
-            <label className="block text-gray-700 text-sm font-bold mb-2" htmlFor="title">
-              Job Title
-            </label>
-            <input
-              className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
-              id="title"
-              type="text"
-              name="title"
-              value={jobData.title}
-              onChange={handleChange}
-              required
-            />
-          </div>
-          
-          <div>
-            <label className="block text-gray-700 text-sm font-bold mb-2" htmlFor="location">
-              Location
-            </label>
-            <input
-              className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
-              id="location"
-              type="text"
-              name="location"
-              value={jobData.location}
-              onChange={handleChange}
-              required
-            />
-          </div>
-          
+          <FormField
+            label="Company Name"
+            id="company"
+            value={jobData.company}
+            onChange={handleChange}
+            required
+          />
+          <FormField
+            label="Job Title"
+            id="title"
+            value={jobData.title}
+            onChange={handleChange}
+            required
+          />
+          <FormField
+            label="Location"
+            id="location"
+            value={jobData.location}
+            onChange={handleChange}
+            required
+          />
           <div>
             <label className="block text-gray-700 text-sm font-bold mb-2" htmlFor="type">
               Job Type
@@ -114,83 +91,45 @@ function AdminJobForm({ onAddJob, jobToEdit, onUpdateJob }) {
               <option value="Freelance">Freelance</option>
             </select>
           </div>
-          
-          <div>
-            <label className="block text-gray-700 text-sm font-bold mb-2" htmlFor="stipend">
-              Stipend/Salary
-            </label>
-            <input
-              className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
-              id="stipend"
-              type="text"
-              name="stipend"
-              value={jobData.stipend}
-              onChange={handleChange}
-              required
-            />
-          </div>
-          
-          <div>
-            <label className="block text-gray-700 text-sm font-bold mb-2" htmlFor="deadline">
-              Application Deadline
-            </label>
-            <input
-              className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
-              id="deadline"
-              type="date"
-              name="deadline"
-              value={jobData.deadline}
-              onChange={handleChange}
-              required
-            />
-          </div>
-          
-          <div className="md:col-span-2">
-            <label className="block text-gray-700 text-sm font-bold mb-2" htmlFor="applicationLink">
-              Application Link
-            </label>
-            <input
-              className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
-              id="applicationLink"
-              type="url"
-              name="applicationLink"
-              value={jobData.applicationLink}
-              onChange={handleChange}
-              required
-            />
-          </div>
-          
-          <div className="md:col-span-2">
-            <label className="block text-gray-700 text-sm font-bold mb-2" htmlFor="description">
-              Job Description
-            </label>
-            <textarea
-              className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
-              id="description"
-              name="description"
-              rows="4"
-              value={jobData.description}
-              onChange={handleChange}
-              required
-            ></textarea>
-          </div>
-          
-          <div className="md:col-span-2">
-            <label className="block text-gray-700 text-sm font-bold mb-2" htmlFor="requirements">
-              Requirements
-            </label>
-            <textarea
-              className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
-              id="requirements"
-              name="requirements"
-              rows="4"
-              value={jobData.requirements}
-              onChange={handleChange}
-              required
-            ></textarea>
-          </div>
+          <FormField
+            label="Stipend/Salary"
+            id="stipend"
+            value={jobData.stipend}
+            onChange={handleChange}
+            required
+          />
+          <FormField
+            label="Application Deadline"
+            id="deadline"
+            type="date"
+            value={jobData.deadline}
+            onChange={handleChange}
+            required
+          />
+          <FormField
+            label="Application Link"
+            id="applicationLink"
+            type="url"
+            value={jobData.applicationLink}
+            onChange={handleChange}
+            required
+          />
+          <TextAreaField
+            label="Job Description"
+            id="description"
+            value={jobData.description}
+            onChange={handleChange}
+            required
+          />
+          <TextAreaField
+            label="Requirements"
+            id="requirements"
+            value={jobData.requirements}
+            onChange={handleChange}
+            required
+          />
         </div>
-        
+
         <div className="mt-6 flex justify-end">
           <button
             type="button"
